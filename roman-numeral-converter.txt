@@ -1,0 +1,16 @@
+// Letter and divisor arrays of the same length with each character corresponding to the number value they represent. Example: letters[1] is "CM", which matches divisors[1] which is 900.
+const letters = ["M", "CM", "D", "CD", "C", "XC", "L", "XL", "X", "IX", "V", "IV", "I"]
+const divisors = [1000, 900, 500, 400, 100, 90, 50, 40, 10, 9, 5, 4, 1]
+
+// The function works by iterating through the list of all possible divisors, from largest to smallest. For each thousand, we add an "M" to the roman numeral string and subtract 1000 from the base number, then move on to 900 when num gets to be less than 1000 and so on. Once the arrays have been exhausted, the roman numeral will be returned.
+function convertToRoman(num) {
+  var romNum = ""
+  for (var i = 0; i < divisors.length; i++) {
+    var subtract = Math.floor(num/divisors[i])
+    for (var j = 0; j < subtract; j++) {
+      num -= divisors[i]
+      romNum += letters[i]
+    }
+  }
+  return romNum;
+}

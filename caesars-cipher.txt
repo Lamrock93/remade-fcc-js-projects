@@ -1,0 +1,15 @@
+// This function uses ASCII to take a letter and shift it up or down 13 places in the alphabet, depending if it's in the first (65-77, A-M) or second (78-90, N-Z) half.
+function decodeLetter(letter) {
+  return (letter > 77 ? String.fromCharCode(letter-13) : String.fromCharCode(letter+13))
+}
+
+// This function creates a new decoded string by iterating through the original one, checking if it's a letter and either running it through the decoded function if so or passing on the original character if not.
+function rot13(str) {
+  let decodedStr = ""
+  for (var i = 0; i < str.length; i++) {
+    decodedStr += (str.charCodeAt(i) > 64 && str.charCodeAt(i) < 91) ? decodeLetter(str.charCodeAt(i)) : str[i]
+  }
+  return decodedStr;
+}
+
+rot13("SERR PBQR PNZC");

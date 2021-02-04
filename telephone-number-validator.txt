@@ -1,0 +1,50 @@
+// This function checks if it's a valid telephone number format by removing white space and parsing out acceptable country codes, hyphens and parentheses. It then makes sure the string is the correct length and all characters are valid numbers.
+
+function telephoneCheck(str) {
+
+  // remove whitespace
+  str = str.split(" ").join("")
+
+  // country code validation
+  if (str[0] == "1") {
+    str = str.substring(1)
+  }
+
+  // if there is a left parenthese, make sure it's closed 4 places later
+  if (str[0] == "(") {
+    if (str[4] != ")") {
+      return false;
+    } else {
+      str = str.substring(1, 4) + str.substring(5)
+    }
+  }
+
+  // if a dash is used after the area code, make sure another one is used four places later
+  if (str[3] == "-") {
+    if (str[7] != "-") {
+      return false
+    } else {
+      str = str.substring(0, 3) + str.substring(4,7) + str.substring(8)
+    }
+  }
+
+  // if a dash is used before the last four digits, it is allowed to be there and can be ignored
+  if (str[6] == "-") {
+    str = str.substring(0, 6) + str.substring(7)
+  }
+
+  // with country code, parentheses and hyphens where they should be parsed out, we make sure string is 10 characters
+  if (str.length != 10) {
+    return false
+  }
+
+  // Finally, we make sure all ten numbers are digits
+  for (var i = 0; i < str.length; i++) {
+    if (!str[i].match(/[0-9]/) ) {
+      return false
+    }
+  }
+
+  // Return true is all tests are passed.
+  return true;
+}

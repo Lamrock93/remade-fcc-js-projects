@@ -1,0 +1,42 @@
+// Currency values translated into numbers
+let values = [.01, .05, .1, .25, 1, 5, 10, 20, 100]
+
+function checkCashRegister(price, cash, cid) {
+
+  // Calculate how much change is owed, and how much cash is in the drawer
+  var changeOwed = (cash - price)
+  var totalCID = 0
+  for (var i = 0; i < cid.length; i++) {
+    totalCID += cid[i][1]
+  }
+
+  // if the amount owed is equal to the amount in the drawer, we can just return a status of closed, with the change being the contents of the register
+  if (totalCID == changeOwed) {
+    return {status: "CLOSED", change: cid}
+  }
+
+  // We give change in the largest denominations we can by working our way down from hundreds to pennies, removing them from the cash in drawer array and adding them to the change array as appropriate.
+  var change = []
+  for (var i = values.length-1; i >= 0; i--) {
+    var amount = 0;
+
+    while (changeOwed >= values[i] && cid[i][1] > 0) {
+      amount += values[i]
+      changeOwed = (changeOwed-values[i]).toFixed(2)
+      cid[i][1] -= values[i]
+      cid[i][1] = cid[i][1].toFixed(2)
+    }
+    
+    if (amount > 0) {
+      change.push([cid[i][0], amount])
+    }
+  }
+
+  // If we couldn't make exact change, return insufficient funds with an empty change array
+  if (changeOwed > 0) {
+    return {status: "INSUFFICIENT_FUNDS", change: []}
+  }
+  
+  // Otherwise return with an open status, and the full change array
+  return {status: "OPEN", change};
+}
